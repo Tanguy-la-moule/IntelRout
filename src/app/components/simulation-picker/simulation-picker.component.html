@@ -1,0 +1,117 @@
+<div>
+  <div id="style-1" style="overflow-y: scroll; height: 750px;">
+    <p class="title is-size-5">
+        Current simulation
+    </p>
+    <div class="box" style="background-color:hsl(345.5, 97.1%, 59.8%); margin-right: 5px; margin-left: 5px;">
+        <article class="media">
+          <div class="media-content">
+            <div class="content">
+              <p style="color:white">
+                <strong style="color:white">Name: </strong><input class="input is-primary" type="text" [(ngModel)]="currentSimulation.name"><br>
+                <strong style="color:white">Date: </strong>{{currentSimulation.date}}<br>
+                <strong style="color:white">Number of interactions: </strong>{{currentSimulation.interactions.length}}
+              </p>
+              <button class="button is-fullwidth" style="border-radius: 10px; margin-bottom: 10px" (click)="sendSaveOrder()">Save simulation</button>
+              <button class="button is-fullwidth" style="border-radius: 10px;" (click)="openDiscardModal()">Discard simulation</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    <p class="title is-size-5" *ngIf="simulations.length > 0">
+        Saved simulations
+    </p>
+    <p class="title is-size-5" *ngIf="simulations.length == 0">
+        No saved simulation
+    </p>
+    <div *ngFor="let simulation of simulations" style="margin-bottom: 10px; margin-right: 5px; margin-left: 5px;">
+      <div class="box" *ngIf="simulation.id != currentSimulation.id">
+        <article class="media">
+          <div class="media-content">
+            <div class="content">
+              <p>
+                <strong>Date: </strong>{{simulation.date}}<button class="delete" aria-label="close" style="margin-left: 35%;" (click)="openDeleteModal(simulation.id)"></button><br>
+                <strong>Name: </strong>{{simulation.name}}<br>
+                <strong>Number of interactions: </strong>{{simulation.interactions.length}}
+                <button class="button is-fullwidth is-primary" style="border-radius: 10px; margin-top: 10px" (click)="openOpenModal(simulation.id)">Open simulation</button>
+              </p>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div class="box" *ngIf="simulation.id == currentSimulation.id" style="background-color:hsl(345.5, 97.1%, 59.8%)">
+          <article class="media">
+            <div class="media-content">
+              <div class="content">
+                <strong style="color: white; text-align: center">
+                  Current simulation
+                </strong>
+                <button class="button is-fullwidth" style="border-radius: 10px; margin-top: 10px" (click)="openDeleteModal(simulation.id)">Delete backup</button>
+              </div>
+            </div>
+          </article>
+        </div>
+    </div>
+  </div>
+  <div class="modal is-active" *ngIf="displayDiscardModal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Simulation discard</p>
+        <button class="delete" aria-label="close" (click)="closeModals()"></button>
+      </header>
+      <section class="modal-card-body">
+        <p class="title is-6">Do you really want to discard the simulation?</p>
+        <div class="columns">
+            <div class="column">
+                <button class="button is-fullwidth is-danger" style="border-radius: 10px;" (click)="sendDiscardOrder(false)">Discard simulation</button>
+            </div>
+            <div class="column">
+                <button class="button is-fullwidth is-success" style="border-radius: 10px;" (click)="sendDiscardOrder(true)">Save, then close</button>
+            </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="modal is-active" *ngIf="displayOpenModal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Open simulation</p>
+          <button class="delete" aria-label="close" (click)="closeModals()"></button>
+        </header>
+        <section class="modal-card-body">
+          <p class="title is-6">You are about to open a saved simulation, what should be done with the current one?</p>
+          <div class="columns">
+              <div class="column">
+                  <button class="button is-fullwidth is-danger" style="border-radius: 10px;" (click)="sendOpenOrder(true)">Discard current simulation</button>
+              </div>
+              <div class="column">
+                  <button class="button is-fullwidth is-success" style="border-radius: 10px;" (click)="sendOpenOrder(false)">Save current simulation</button>
+              </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="modal is-active" *ngIf="displayDeleteModal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Delete saved simulation</p>
+            <button class="delete" aria-label="close" (click)="closeModals()"></button>
+          </header>
+          <section class="modal-card-body">
+            <p class="title is-6">Are you sure you want to delete a saved simulation?</p>
+            <div class="columns">
+                <div class="column">
+                    <button class="button is-fullwidth is-success" style="border-radius: 10px;" (click)="closeModals()">Cancel</button>
+                </div>
+                <div class="column">
+                    <button class="button is-fullwidth is-danger" style="border-radius: 10px;" (click)="sendDeleteOrder()">Delete</button>
+                </div>
+            </div>
+          </section>
+        </div>
+      </div>
+</div>

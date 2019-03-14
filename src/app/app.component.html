@@ -1,0 +1,22 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div>
+  <nav class="level">
+    <div class="level-left">
+      <img src="../assets/2018-12-13_Odigo_Logo-full-color_RGB.jpg" style="max-width:100px;max-height: auto; margin-left: 70px">
+    </div>
+    <div class="level-item">
+      <p class="title is-2 has-text-centered" style="margin-left: 120px">Intelligent Routing - Training interface</p>
+    </div>
+  </nav>
+
+  <div class="columns is-variable is-8" style="text-align:center">
+    <div class="column is-3">
+      <simulation-picker [currentSimulation]=simulation [simulations]=simulations (open)="onOpen($event)" (delete)="onDelete($event)" (discard)="onDiscard($event)" (save)="onSave($event)"></simulation-picker>
+    </div>
+    <div class="column">
+      <br>
+      <simulation [simulation]=simulation></simulation>
+    </div>
+  </div>
+</div>
+
