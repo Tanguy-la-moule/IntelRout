@@ -15,8 +15,41 @@
     </div>
     <div class="column">
       <br>
+        <div class="card">
+            <header class="card-header">
+                <p class="title is-size-5" style="padding: 1%; width: 100%; text-align: left">
+                  Database dump
+                </p>
+              </header>
+            <div class="card-content" style="text-align: left">
+              <div class="columns">
+                <div class="column">
+                  <button class="button is-fullwidth is-primary" style="border-radius: 10px;" (click)="triggerDownload()">Download .json dump</button>
+                  <a id="downloadAnchorElem" style="display:none"></a>
+                </div>
+                <div class="column">
+                    <button class="button is-fullwidth is-primary" style="border-radius: 10px;" (click)="openUploadModal()">Upload .json dump</button>
+                </div>
+              </div>
+            </div>
+          </div>
+      <br>
       <simulation [simulation]=simulation></simulation>
+      <br>
+      <chart [simulation]=simulation [refresher]="simulation.interactions.length"></chart>
     </div>
   </div>
+  <div class="modal is-active" *ngIf="displayModal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Upload .json dump</p>
+          <button class="delete" aria-label="close" (click)="closeModals()"></button>
+        </header>
+        <section class="modal-card-body">
+          <p class="title is-6">You are going to lose all the simulations you have not downloaded!</p>
+          <button class="button is-fullwidth is-primary" style="border-radius: 10px;" (click)="triggerDownload()">Download .json dump of current simulations</button>
+        </section>
+      </div>
+    </div>
 </div>
-

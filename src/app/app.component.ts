@@ -13,6 +13,7 @@ export class AppComponent {
   title: string = 'IntelRout';
   simulation: Simulation;
   simulations: Array<Simulation>;
+  displayModal: boolean = false;
 
   constructor(private localStorageService: LocalStorageService){
     if(localStorage.getItem('id') == undefined){
@@ -62,5 +63,17 @@ export class AppComponent {
   onDelete(id: number){
     this.localStorageService.deleteSimulation(id);
     this.simulations = this.localStorageService.getSimulations();
+  }
+
+  public triggerDownload(){
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(localStorage.getItem('simulations'));
+    var dlAnchorElem = document.getElementById('downloadAnchorElem');
+    dlAnchorElem.setAttribute("href",     dataStr     );
+    dlAnchorElem.setAttribute("download", "simulations.json");
+    dlAnchorElem.click();
+  }
+
+  public openUploadModal(){
+    this.displayModal = true;
   }
 }

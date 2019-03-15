@@ -13,11 +13,11 @@ import { SocketIoService } from '../../services/socketIoService/socketio.service
 export class SimulationComponent implements OnInit {
   @Input() simulation: Simulation;
 
-  sex: boolean = true;
+  sex: Number = 0;
   age: Number = 18;
   agent: Number = 1;
-  salary: Number = 1;
-  skill: number = 1;
+  salary: Number = 0;
+  skill: number = 0;
   year_of_arrival: Number = 2019;
   satisfaction: Number = 3;
 
@@ -30,6 +30,12 @@ export class SimulationComponent implements OnInit {
       {id: 5, text: 'More than $200.000'},
   ];
 
+  public sex_options: Array<Object> = [
+    {id: 0, text: 'Male'},
+    {id: 1, text: 'Non Binary'},
+    {id: 2, text: 'Female'}
+  ];
+
   public skill_options: Array<Object> = [
     {id: 0, text: 'Credit card loss'},
     {id: 1, text: 'Open a loan'},
@@ -37,16 +43,9 @@ export class SimulationComponent implements OnInit {
     {id: 3, text: 'Order checks'},
     {id: 4, text: 'Request an appointment'},
     {id: 5, text: 'Others'},
-];
+  ];
 
-  public sex_options: Array<Object> = [
-    {id: 1, text: 'Male'},
-    {id: 2, text: 'Female'},
-];
-
-  constructor(private localStorageService: LocalStorageService, private socketIoService: SocketIoService){
-    this.socketIoService.sendMessage()
-  }
+  constructor(private localStorageService: LocalStorageService, private socketIoService: SocketIoService){ }
 
   public addInteraction(){
     var new_interaction: Interaction = new Interaction(this.sex, this.age, this.salary, this.skill, this.year_of_arrival, this.agent, this.satisfaction)
@@ -54,6 +53,13 @@ export class SimulationComponent implements OnInit {
     this.localStorageService.saveActiveSimulation(this.simulation);
     console.log(this.simulation.interactions, this.simulation.interactions.length);
   }
+
+  public removeInteraction(id: number){
+    this.simulation.removeInteraction(id);
+    this.localStorageService.saveActiveSimulation(this.simulation);
+    console.log('removing interaction');
+  }
+
   ngOnInit() {
   }
 

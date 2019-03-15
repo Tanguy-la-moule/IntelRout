@@ -1,36 +1,41 @@
-<div class="columns">
-  <p class="title is-size-4">
-      Simulation's interactions
-  </p>
-</div>
-<table class="table is-striped is-hoverable is-fullwidth">
-    <thead>
-      <tr>
-        <th><abbr title="Position">N</abbr></th>
-        <th>Sex</th>
-        <th>Age</th>
-        <th>Salary</th>
-        <th>Skill</th>
-        <th><abbr title="Year of arrival">Arrival</abbr></th>
-        <th>Routed to</th>
-        <th>Satisfaction</th>
-      </tr>
-    </thead>
-    
-    <tbody>
-      <tr *ngFor="let interaction of simulation.interactions, index as index">
-          <th>{{index + 1}}</th>
-          <td *ngIf="interaction.sex">Male</td><td *ngIf="!interaction.sex">Female</td>
-          <td>{{interaction.age}}</td>
-          <td>{{salary_options[interaction.salary].text}}</td>
-          <td>{{skill_options[interaction.skill].text}}</td>
-          <td>{{interaction.year_of_arrival}}</td>
-          <td>Agent {{interaction.agent}}</td>
-          <td>{{interaction.satisfaction}}/5</td>
+<div class="card">
+  <header class="card-header">
+      <p class="title is-size-5" style="padding: 1%; width: 100%; text-align: left">
+        Simulation's interactions
+      </p>
+    </header>
+  <div class="card-content" style="text-align: left">
+    <table class="table is-striped is-hoverable is-fullwidth">
+      <thead>
+        <tr>
+          <th><abbr title="Position">N</abbr></th>
+          <th>Sex</th>
+          <th>Age</th>
+          <th>Salary</th>
+          <th>Skill</th>
+          <th><abbr title="Year of arrival">Arrival</abbr></th>
+          <th>Routed to</th>
+          <th>Satisfaction</th>
         </tr>
-    </tbody>
-  </table>
-  <p *ngIf="simulation.interactions.length == 0" class="title is-5" style="text-align:center">Try adding an client interaction just below</p>
+      </thead>
+      
+      <tbody>
+        <tr *ngFor="let interaction of simulation.interactions, index as index">
+            <th>{{index + 1}}</th>
+            <td>{{sex_options[interaction.sex].text}}</td>
+            <td>{{interaction.age}}</td>
+            <td>{{salary_options[interaction.salary].text}}</td>
+            <td>{{skill_options[interaction.skill].text}}</td>
+            <td>{{interaction.year_of_arrival}}</td>
+            <td>Agent {{interaction.agent}}</td>
+            <td>{{interaction.satisfaction}}/5 <button class="delete" aria-label="close" style="margin-left: 20px" (click)="removeInteraction(index)"></button></td>
+          </tr>
+      </tbody>
+    </table>
+    <p *ngIf="simulation.interactions.length == 0" class="title is-5" style="text-align:center">Try adding an client interaction just below</p>
+  </div>
+</div>
+
 <br>
 <div class="card">
     <header class="card-header">
@@ -46,8 +51,7 @@
                   <div class="control">
                     <div class="select is-primary">
                       <select [(ngModel)]="sex">
-                        <option value='true'>Male</option>
-                        <option value='false'>Female</option>
+                        <option *ngFor="let option of sex_options" [value]="option.id">{{option.text}}</option>
                       </select>
                     </div>
                   </div>
@@ -59,7 +63,7 @@
                     <div class="control">
                       <div class="select is-primary">
                         <select [(ngModel)]="skill">
-                          <option *ngFor="let option2 of skill_options" [value]="option2.id">{{option2.text}}</option>
+                          <option *ngFor="let option of skill_options" [value]="option.id">{{option.text}}</option>
                         </select>
                       </div>
                     </div>
@@ -97,7 +101,7 @@
           </div><br>
         
           <div class="slidecontainer">
-            <label class="label">Salary: {{salary_options[salary].text}}</label>
+            <label class="label">Salary: {{salary_options[salary].text}} per month</label>
             <input type="range" min="0" max="5" class="slider" [(ngModel)]="salary">
           </div><br>
 
@@ -107,16 +111,5 @@
           </div><br>
         
           <a class="button is-primary is-fullwidth" (click)="addInteraction()">Add an interaction to the simulation</a>
-    </div>
-  </div><br>
-
-  <div class="card">
-    <header class="card-header">
-        <p class="title is-size-5" style="padding: 1%; width: 100%; text-align: left">
-             Review your training data
-        </p>
-      </header>
-    <div class="card-content" style="text-align: left">
-      <chart></chart>
     </div>
   </div>

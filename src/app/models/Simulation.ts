@@ -26,4 +26,8 @@ export class Simulation {
     addInteraction(interaction: Interaction): void{
         this.interactions.push(interaction);
     }
+
+    removeInteraction(id: number){
+        this.interactions.splice(id, 1);
+    }
 }
