@@ -2,7 +2,7 @@
 <div>
   <nav class="level">
     <div class="level-left">
-      <img src="../assets/2018-12-13_Odigo_Logo-full-color_RGB.jpg" style="max-width:100px;max-height: auto; margin-left: 70px">
+      <img src="../assets/2018-12-13_Odigo_Logo-full-color_RGB.jpg" style="max-width:100px;max-height: auto; margin-left: 70px;">
     </div>
     <div class="level-item">
       <p class="title is-2 has-text-centered" style="margin-left: 120px">Intelligent Routing - Training interface</p>
@@ -14,6 +14,8 @@
       <simulation-picker [currentSimulation]=simulation [simulations]=simulations (open)="onOpen($event)" (delete)="onDelete($event)" (discard)="onDiscard($event)" (save)="onSave($event)"></simulation-picker>
     </div>
     <div class="column">
+      <br>
+      <chart [simulation]=simulation [refresher]="simulation.interactions.length"></chart>
       <br>
         <div class="card">
             <header class="card-header">
@@ -35,10 +37,9 @@
           </div>
       <br>
       <simulation [simulation]=simulation></simulation>
-      <br>
-      <chart [simulation]=simulation [refresher]="simulation.interactions.length"></chart>
     </div>
   </div>
+
   <div class="modal is-active" *ngIf="displayModal">
       <div class="modal-background"></div>
       <div class="modal-card">
@@ -46,9 +47,15 @@
           <p class="modal-card-title">Upload .json dump</p>
           <button class="delete" aria-label="close" (click)="closeModals()"></button>
         </header>
-        <section class="modal-card-body">
+        <section class="modal-card-body" style="text-align:center">
           <p class="title is-6">You are going to lose all the simulations you have not downloaded!</p>
-          <button class="button is-fullwidth is-primary" style="border-radius: 10px;" (click)="triggerDownload()">Download .json dump of current simulations</button>
+          <button class="button is-fullwidth is-primary" style="border-radius: 10px;" (click)="triggerDownload()">Download .json dump of current simulations</button><br>
+          <p class="title is-6">When you are sure</p>
+          <label for="file-upload" class="button is-primary" class="custom-file-upload">
+            Custom Upload
+          </label>
+          <input class="button " id="file-upload" type="file" accept=".json" style="display: none" (change)="onFileChange($event)"/>
+          
         </section>
       </div>
     </div>

@@ -76,4 +76,26 @@ export class AppComponent {
   public openUploadModal(){
     this.displayModal = true;
   }
+
+  public closeModals(){
+    this.displayModal = false;
+  }
+
+  public onFileChange(event){
+    var reader = new FileReader();
+    reader.onload = this.onReaderLoad;
+    reader.readAsText(event.target.files[0]);
+  }
+
+  public onReaderLoad(event){
+    var simulations = JSON.parse(event.target.result)
+    var max_id = 0;
+    for (var simulation of simulations){
+      max_id = Math.max(max_id, simulation.id)
+    }
+    localStorage.clear();
+    localStorage.setItem('id', max_id.toString());
+    localStorage.setItem('simulations', event.target.result);
+    location.reload();
+  }
 }

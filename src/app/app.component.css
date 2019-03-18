@@ -1,0 +1,12 @@
+.custom-file-upload {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    display: inline-block;
+    cursor: pointer;
+    background-color:hsl(345.5, 97.1%, 59.8%);
+    width: 50%;
+    height: 30px;
+    color: white;
+    text-align: center;
+    margin-left: 25%;
+}
