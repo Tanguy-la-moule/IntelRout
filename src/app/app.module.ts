@@ -8,6 +8,7 @@ import { LocalStorageService } from './services/localStorageService/local-storag
 import { SocketIoService } from './services/socketIoService/socketio.service'
 import { SimulationPickerComponent } from './components/simulation-picker/simulation-picker.component';
 import { ChartComponent } from './components/chart/chart.component';
+import { PredictorComponent } from './components/predictor/predictor.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { ChartComponent } from './components/chart/chart.component';
     SimulationComponent,
     SimulationPickerComponent,
     ChartComponent,
+    PredictorComponent,
   ],
   imports: [
     BrowserModule,

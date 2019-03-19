@@ -68,7 +68,7 @@ export class ChartComponent implements OnInit {
         ticktext: ['Agent 1', 'Agent 2', 'Agent 3', 'Agent 4', 'Agent 5'],
         range: [1,5],
         label: 'Agent',
-        values: this.unpack(this.simulation.interactions, 'agent')
+        values: this.unpack(this.simulation.interactions, 'agent_ID')
       }, {
         range: [1,5],
         label: 'Satisfaction',

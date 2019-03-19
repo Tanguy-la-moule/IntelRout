@@ -22,7 +22,8 @@
         Saved simulations
     </p>
     <p class="title is-size-5" *ngIf="simulations.length == 0">
-        No saved simulation
+        No saved simulation<br>
+        ...
     </p>
     <div *ngFor="let simulation of simulations" style="margin-bottom: 10px; margin-right: 5px; margin-left: 5px;">
       <div class="box" *ngIf="simulation.id != currentSimulation.id">
@@ -52,7 +53,17 @@
           </article>
         </div>
     </div>
+    <br>
+    <p class="title is-size-5">
+      Manage saved data
+    </p>
+
+    <button class="button is-fullwidth is-primary" style="border-radius: 10px;" *ngIf="simulations.length > 0" (click)="triggerDownload()">Download .json dump</button>
+    <a id="downloadAnchorElem" style="display:none"></a><br  *ngIf="simulations.length > 0">
+  
+    <button class="button is-fullwidth is-primary" style="border-radius: 10px;" (click)="sendUploadOrder()">Upload .json dump</button>
   </div>
+  
   <div class="modal is-active" *ngIf="displayDiscardModal">
     <div class="modal-background"></div>
     <div class="modal-card">
@@ -73,6 +84,7 @@
       </section>
     </div>
   </div>
+
   <div class="modal is-active" *ngIf="displayOpenModal">
       <div class="modal-background"></div>
       <div class="modal-card">

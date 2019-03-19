@@ -1,0 +1,72 @@
+<div class="card">
+  <header class="card-header">
+      <p class="title is-size-5" style="padding: 1%; width: 100%; text-align: left">
+        Get routing prediction: fill manually caller's information
+      </p>
+    </header>
+  <div class="card-content" style="text-align: left">
+    <div class="columns is-gapless">
+        <div class="column">
+          <div class="field">
+              <label class="label">Sex:</label>
+              <div class="control">
+                <div class="select is-primary">
+                  <select [(ngModel)]="sex">
+                    <option *ngFor="let option of sex_options" [value]="option.id">{{option.text}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column is-4">
+              <div class="field">
+                  <label class="label">IVR choice:</label>
+                  <div class="control">
+                    <div class="select is-primary">
+                      <select [(ngModel)]="skill">
+                        <option *ngFor="let option of skill_options" [value]="option.id">{{option.text}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <div class="control">
+                  <label class="label">Age:</label>
+                <input class="input is-primary" style="width: 80%" type="number" step="1" [(ngModel)]="age">
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <div class="control">
+                  <label class="label">Arrival year:</label>
+                <input class="input is-primary" style="width: 80%" type="number" step="1" [(ngModel)]="year_of_arrival">
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <div class="slidecontainer">
+          <label class="label">Salary: {{salary_options[salary].text}} per month</label>
+          <input type="range" min="0" max="5" class="slider" [(ngModel)]="salary">
+        </div><br>
+          
+        <a class="button is-primary is-fullwidth" (click)="predictBestAgent()">Predict routing</a>
+  </div>
+
+  <div class="modal is-active" *ngIf="displayModal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Prediction result</p>
+        <button class="delete" aria-label="close" (click)="closeModals()"></button>
+      </header>
+      <section class="modal-card-body" style="text-align:center">
+        <p class="title is-5">The caller will be routed to agent {{prediction}}</p>
+        <button class="button is-fullwidth is-primary" style="border-radius: 10px;" (click)="closeModals()">Close</button>
+      </section>
+    </div>
+  </div>
+</div>

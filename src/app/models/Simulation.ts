@@ -12,7 +12,7 @@ export class Simulation {
             this.date = date;
             this.name = name;
             for (var interaction of interactions){
-                this.interactions.push(new Interaction(interaction.sex, interaction.age, interaction.salary, interaction.skill, interaction.year_of_arrival, interaction.agent, interaction.satisfaction));
+                this.interactions.push(new Interaction(interaction.sex, interaction.age, interaction.salary, interaction.skill, interaction.year_of_arrival, interaction.agent_ID, interaction.satisfaction));
             }
         } else {
             this.id = parseInt(localStorage.getItem('id')) + 1;

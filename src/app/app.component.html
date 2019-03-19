@@ -1,8 +1,8 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div>
   <nav class="level">
-    <div class="level-left">
-      <img src="../assets/2018-12-13_Odigo_Logo-full-color_RGB.jpg" style="max-width:100px;max-height: auto; margin-left: 70px;">
+    <div class="level-item">
+      <img src="../assets/2018-12-13_Odigo_Logo-full-color_RGB.jpg" style="max-width:100px;max-height: auto; margin-right: 5px;">
     </div>
     <div class="level-item">
       <p class="title is-2 has-text-centered" style="margin-left: 120px">Intelligent Routing - Training interface</p>
@@ -11,30 +11,13 @@
 
   <div class="columns is-variable is-8" style="text-align:center">
     <div class="column is-3">
-      <simulation-picker [currentSimulation]=simulation [simulations]=simulations (open)="onOpen($event)" (delete)="onDelete($event)" (discard)="onDiscard($event)" (save)="onSave($event)"></simulation-picker>
+      <simulation-picker [currentSimulation]=simulation [simulations]=simulations (open)="onOpen($event)" (delete)="onDelete($event)" (discard)="onDiscard($event)" (save)="onSave($event)" (upload)="onUpload($event)"></simulation-picker>
     </div>
     <div class="column">
       <br>
-      <chart [simulation]=simulation [refresher]="simulation.interactions.length"></chart>
+      <predictor [simulation]=simulation></predictor>
       <br>
-        <div class="card">
-            <header class="card-header">
-                <p class="title is-size-5" style="padding: 1%; width: 100%; text-align: left">
-                  Database dump
-                </p>
-              </header>
-            <div class="card-content" style="text-align: left">
-              <div class="columns">
-                <div class="column">
-                  <button class="button is-fullwidth is-primary" style="border-radius: 10px;" (click)="triggerDownload()">Download .json dump</button>
-                  <a id="downloadAnchorElem" style="display:none"></a>
-                </div>
-                <div class="column">
-                    <button class="button is-fullwidth is-primary" style="border-radius: 10px;" (click)="openUploadModal()">Upload .json dump</button>
-                </div>
-              </div>
-            </div>
-          </div>
+      <chart [simulation]=simulation [refresher]="simulation.interactions.length"></chart>
       <br>
       <simulation [simulation]=simulation></simulation>
     </div>
@@ -52,7 +35,7 @@
           <button class="button is-fullwidth is-primary" style="border-radius: 10px;" (click)="triggerDownload()">Download .json dump of current simulations</button><br>
           <p class="title is-6">When you are sure</p>
           <label for="file-upload" class="button is-primary" class="custom-file-upload">
-            Custom Upload
+            <span style="vertical-align: middle;">Upload .json dump</span>
           </label>
           <input class="button " id="file-upload" type="file" accept=".json" style="display: none" (change)="onFileChange($event)"/>
           

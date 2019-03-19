@@ -16,6 +16,7 @@ export class SimulationPickerComponent implements OnInit {
   @Output() save = new EventEmitter();
   @Output() open = new EventEmitter<[boolean, number]>();
   @Output() delete = new EventEmitter<number>();
+  @Output() upload = new EventEmitter();
 
   displayDiscardModal: boolean = false;
   displayOpenModal: boolean = false;
@@ -70,5 +71,17 @@ export class SimulationPickerComponent implements OnInit {
   }
   sendSaveOrder(){
     this.save.emit(true);
+  }
+
+  sendUploadOrder(){
+    this.upload.emit(true);
+  }
+
+  public triggerDownload(){
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(localStorage.getItem('simulations'));
+    var dlAnchorElem = document.getElementById('downloadAnchorElem');
+    dlAnchorElem.setAttribute("href",     dataStr     );
+    dlAnchorElem.setAttribute("download", "simulations.json");
+    dlAnchorElem.click();
   }
 }

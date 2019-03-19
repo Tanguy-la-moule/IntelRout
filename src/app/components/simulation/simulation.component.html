@@ -4,7 +4,7 @@
         Simulation's interactions
       </p>
     </header>
-  <div class="card-content" style="text-align: left; height:300px; overflow-y: scroll;">
+  <div class="card-content" style="text-align: left; max-height:400px; overflow-y: scroll;">
     <table class="table is-striped is-hoverable is-fullwidth">
       <thead>
         <tr>
@@ -27,7 +27,7 @@
             <td>{{salary_options[interaction.salary].text}}</td>
             <td>{{skill_options[interaction.skill].text}}</td>
             <td>{{interaction.year_of_arrival}}</td>
-            <td>Agent {{interaction.agent}}</td>
+            <td>Agent {{interaction.agent_ID}}</td>
             <td>{{interaction.satisfaction}}/5 <button class="delete" aria-label="close" style="margin-left: 20px" (click)="removeInteraction(index)"></button></td>
           </tr>
       </tbody>
@@ -40,7 +40,7 @@
 <div class="card">
     <header class="card-header">
         <p class="title is-size-5" style="padding: 1%; width: 100%; text-align: left">
-             Add an interaction
+             Add training interaction manually
         </p>
       </header>
     <div class="card-content" style="text-align: left">
@@ -89,7 +89,7 @@
                 <div class="field">
                     <div class="control">
                         <label class="label">Arrival year:</label>
-                      <input class="input is-primary" type="number" step="1" placeholder="Primary input" [(ngModel)]="year_of_arrival">
+                      <input class="input is-primary" type="number" step="1" [(ngModel)]="year_of_arrival">
                     </div>
                   </div>
             </div>
