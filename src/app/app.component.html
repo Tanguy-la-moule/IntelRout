@@ -15,11 +15,11 @@
     </div>
     <div class="column">
       <br>
-      <predictor [simulation]=simulation *ngIf="simulation.interactions.length > 0"></predictor>
+      <predictor [simulation]=simulation [isModelTrained]=isModelTrained *ngIf="simulation.interactions.length > 0" (train)="trainModel()"></predictor>
       <br>
       <chart [simulation]=simulation [refresher]="simulation.interactions.length" *ngIf="simulation.interactions.length > 0"></chart>
       <br>
-      <simulation [simulation]=simulation></simulation>
+      <simulation [simulation]=simulation (interactionAdded)="interactionAddedToSimulation($event)"></simulation>
     </div>
   </div>
 
@@ -37,8 +37,7 @@
           <label for="file-upload" class="button is-primary" class="custom-file-upload">
             <span style="vertical-align: middle;">Upload .json dump</span>
           </label>
-          <input class="button " id="file-upload" type="file" accept=".json" style="display: none" (change)="onFileChange($event)"/>
-          
+          <input class="button " id="file-upload" type="file" accept=".json" style="display: none" (change)="onFileChange($event)"/>          
         </section>
       </div>
     </div>

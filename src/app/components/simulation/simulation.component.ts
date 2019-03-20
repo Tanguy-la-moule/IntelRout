@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { Simulation } from '../../models/Simulation';
 import { Interaction } from '../../models/Interaction';
@@ -12,6 +12,7 @@ import { SocketIoService } from '../../services/socketIoService/socketio.service
 })
 export class SimulationComponent implements OnInit {
   @Input() simulation: Simulation;
+  @Output() interactionAdded = new EventEmitter();
 
   sex: Number = 0;
   age: Number = 18;
@@ -52,6 +53,7 @@ export class SimulationComponent implements OnInit {
     this.simulation.addInteraction(new_interaction);
     this.localStorageService.saveActiveSimulation(this.simulation);
     this.socketIoService.addInteractions(this.simulation.id.toString(), [new_interaction]);
+    this.interactionAdded.emit();
     console.log(this.simulation.interactions, this.simulation.interactions.length);
   }
 

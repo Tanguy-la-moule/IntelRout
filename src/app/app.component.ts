@@ -17,6 +17,8 @@ export class AppComponent {
   simulations: Array<Simulation>;
   displayModal: boolean = false;
 
+  isModelTrained: boolean = false;
+
   constructor(private localStorageService: LocalStorageService, private socketIoService: SocketIoService){
     if(localStorage.getItem('id') == undefined){
       localStorage.clear();
@@ -125,16 +127,25 @@ export class AppComponent {
     this.socketIoService.interactionAdded().subscribe(bool => {
       if(bool){
         console.log("interactions added");
-        this.socketIoService.trainModel(this.simulation.id.toString())
+        this.isModelTrained = false;
       }
     })
+  }
+
+  interactionAddedToSimulation(){
+    this.isModelTrained = false;
   }
 
   modelTrained(): void {
     this.socketIoService.modelTrained().subscribe(bool => {
       if(bool){
+        this.isModelTrained = true;
         console.log("model trained");
       }
     })
+  }
+
+  trainModel(){
+    this.socketIoService.trainModel(this.simulation.id.toString());
   }
 }

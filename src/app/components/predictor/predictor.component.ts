@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Simulation } from 'src/app/models/Simulation';
 import { SocketIoService } from 'src/app/services/socketIoService/socketio.service';
 
@@ -9,6 +9,8 @@ import { SocketIoService } from 'src/app/services/socketIoService/socketio.servi
 })
 export class PredictorComponent implements OnInit {
   @Input() simulation: Simulation;
+  @Input() isModelTrained: boolean;
+  @Output() train = new EventEmitter();
 
   sex: number = 0;
   age: number = 18;
@@ -62,6 +64,10 @@ export class PredictorComponent implements OnInit {
       this.prediction = result;
       this.displayPredictionModal = true;
     })
+  }
+
+  public trainModel(){
+    this.train.emit();
   }
 
   public openCallModal(){

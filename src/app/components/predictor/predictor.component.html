@@ -1,11 +1,16 @@
 <div class="card">
   <header class="card-header">
-      <p class="title is-size-5" style="padding: 1%; width: 100%; text-align: left">
+      <p class="title is-size-5" style="padding: 1%; width: 100%; text-align: left" *ngIf="isModelTrained">
         Get routing prediction: fill manually caller's information
+      </p>
+      <p class="title is-size-5" style="padding: 1%; width: 100%; text-align: left" *ngIf="!isModelTrained">
+        Train model
       </p>
     </header>
   <div class="card-content" style="text-align: left">
-    <div class="columns is-gapless">
+    <a class="button is-fullwidth is-primary" *ngIf="!isModelTrained" (click)="trainModel()">Train model</a>
+    <div *ngIf="isModelTrained">
+      <div class="columns is-gapless">
         <div class="column">
           <div class="field">
               <label class="label">Sex:</label>
@@ -34,7 +39,7 @@
             <div class="field">
               <div class="control">
                   <label class="label">Age:</label>
-                <input class="input is-primary" style="width: 80%" type="number" step="1" min="0" [(ngModel)]="age">
+                <input class="input is-primary" style="width: 80%" type="number" step="1" min="18" [(ngModel)]="age">
               </div>
             </div>
           </div>
@@ -55,6 +60,7 @@
           
         <a class="button is-primary is-fullwidth" (click)="predictBestAgent()">Predict routing</a><br>
         <a class="button is-primary is-fullwidth" (click)="openCallModal()">Incoming call</a>
+      </div>
   </div>
 
   <div class="modal is-active" *ngIf="displayPredictionModal">
