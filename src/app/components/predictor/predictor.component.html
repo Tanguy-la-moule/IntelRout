@@ -53,10 +53,11 @@
           <input type="range" min="0" max="5" class="slider" [(ngModel)]="salary">
         </div><br>
           
-        <a class="button is-primary is-fullwidth" (click)="predictBestAgent()">Predict routing</a>
+        <a class="button is-primary is-fullwidth" (click)="predictBestAgent()">Predict routing</a><br>
+        <a class="button is-primary is-fullwidth" (click)="openCallModal()">Incoming call</a>
   </div>
 
-  <div class="modal is-active" *ngIf="displayModal">
+  <div class="modal is-active" *ngIf="displayPredictionModal">
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
@@ -66,6 +67,28 @@
       <section class="modal-card-body" style="text-align:center">
         <p class="title is-5">The caller will be routed to agent {{prediction}}</p>
         <button class="button is-fullwidth is-primary" style="border-radius: 10px;" (click)="closeModals()">Close</button>
+      </section>
+    </div>
+  </div>
+
+  <div class="modal is-active" *ngIf="displayCallModal">
+    <div class="modal-background"></div>
+    <div class="modal-card" style="width:1000px; height: auto; text-align: center;">
+      <section class="modal-card-body" style="text-align:center">
+        <div *ngIf="!beginCall"><img src="../../../assets/ringing.gif"></div>
+        <div class="columns" *ngIf="beginCall">
+          <div class="column is-5">
+            <p class="image"><img src="../../../assets/customer.gif" style="height:100%; width:100%"></p>
+            <p class="title is-size-5">Customer: Aymeric Quesnes</p>
+          </div>
+          <div class="column is-2" style="display: flex; align-items: center;"> 
+            <p class="title is-size-5">routed to</p>
+          </div>
+          <div class="column is-5" style="display: flex; align-items: center;"  >
+            <p class="image"><img src="../../../assets/agent.gif" style="height:100%; width:100%"><p class="title is-size-5">Agent 1  </p></p>
+            
+          </div>
+        </div>
       </section>
     </div>
   </div>

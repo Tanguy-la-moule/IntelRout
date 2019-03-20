@@ -15,7 +15,9 @@ export class PredictorComponent implements OnInit {
   salary: number = 0;
   skill: number = 0;
   year_of_arrival: number = 2019;
-  displayModal: boolean = false;
+  displayPredictionModal: boolean = false;
+  displayCallModal: boolean = false;
+  beginCall: boolean = false;
   prediction: number;
 
   public salary_options: Array<Object> = [
@@ -58,11 +60,23 @@ export class PredictorComponent implements OnInit {
     this.socketIoService.agentPredicted().subscribe(result => {
       console.log("agent predicted: "+ result);
       this.prediction = result;
-      this.displayModal = true;
+      this.displayPredictionModal = true;
     })
   }
 
+  public openCallModal(){
+    this.displayCallModal = true;
+    setTimeout(() => {
+      this.beginCall = true;
+      setTimeout(() => {
+        this.beginCall = false;
+        this.closeModals();
+      }, 5000);
+    }, 3000);
+  }
+
   public closeModals(){
-    this.displayModal = false;
+    this.displayPredictionModal = false;
+    this.displayCallModal = false;
   }
 }
