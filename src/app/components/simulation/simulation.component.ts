@@ -51,6 +51,7 @@ export class SimulationComponent implements OnInit {
     var new_interaction: Interaction = new Interaction(this.sex, this.age, this.salary, this.skill, this.year_of_arrival, this.agent, this.satisfaction)
     this.simulation.addInteraction(new_interaction);
     this.localStorageService.saveActiveSimulation(this.simulation);
+    this.socketIoService.addInteractions(this.simulation.id.toString(), [new_interaction]);
     console.log(this.simulation.interactions, this.simulation.interactions.length);
   }
 
