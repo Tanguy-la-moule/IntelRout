@@ -1,15 +1,16 @@
 <div class="card">
   <header class="card-header">
-      <p class="title is-size-5" style="padding: 1%; width: 100%; text-align: left" *ngIf="isModelTrained">
+      <p class="title is-size-5" style="padding: 1%; width: 100%; text-align: left" *ngIf="isModelTrained && !loading">
         Get routing prediction: fill manually caller's information
       </p>
-      <p class="title is-size-5" style="padding: 1%; width: 100%; text-align: left" *ngIf="!isModelTrained">
+      <div class="title is-size-5" style="padding: 1%; width: 100%; text-align: left" *ngIf="!isModelTrained">
         Train model
-      </p>
+      </div>
     </header>
   <div class="card-content" style="text-align: left">
-    <a class="button is-fullwidth is-primary" *ngIf="!isModelTrained" (click)="trainModel()">Train model</a>
-    <div *ngIf="isModelTrained">
+    <a class="button is-fullwidth is-primary" *ngIf="!isModelTrained && !loading" (click)="trainModel()">Train model</a>
+    <div class="lds-ring" *ngIf="loading"><div></div><div></div><div></div><div></div></div>
+    <div *ngIf="isModelTrained && !loading">
       <div class="columns is-gapless">
         <div class="column">
           <div class="field">
@@ -54,46 +55,63 @@
         </div>
       
         <div class="slidecontainer">
-          <label class="label">Salary: {{salary_options[salary].text}} per month</label>
+          <label class="label">Salary: {{salary_options[salary].text}} per year</label>
           <input type="range" min="0" max="5" class="slider" [(ngModel)]="salary">
         </div><br>
           
-        <a class="button is-primary is-fullwidth" (click)="predictBestAgent()">Predict routing</a><br>
-        <a class="button is-primary is-fullwidth" (click)="openCallModal()">Incoming call</a>
+        <a class="button is-primary is-fullwidth" (click)="predictBestAgent()">Predict routing</a>
       </div>
   </div>
 
-  <div class="modal is-active" *ngIf="displayPredictionModal">
+  <div class="modal is-active" [ngClass]="{'modal': true, 'is-active': displayPredictionModal}">
     <div class="modal-background"></div>
-    <div class="modal-card">
+    <div class="modal-card" style="width:90%; height: auto; text-align: center;">
       <header class="modal-card-head">
         <p class="modal-card-title">Prediction result</p>
         <button class="delete" aria-label="close" (click)="closeModals()"></button>
       </header>
-      <section class="modal-card-body" style="text-align:center">
-        <p class="title is-5">The caller will be routed to agent {{prediction}}</p>
-        <button class="button is-fullwidth is-primary" style="border-radius: 10px;" (click)="closeModals()">Close</button>
-      </section>
-    </div>
-  </div>
-
-  <div class="modal is-active" *ngIf="displayCallModal">
-    <div class="modal-background"></div>
-    <div class="modal-card" style="width:1000px; height: auto; text-align: center;">
-      <section class="modal-card-body" style="text-align:center">
-        <div *ngIf="!beginCall"><img src="../../../assets/ringing.gif"></div>
-        <div class="columns" *ngIf="beginCall">
-          <div class="column is-5">
-            <p class="image"><img src="../../../assets/customer.gif" style="height:100%; width:100%"></p>
-            <p class="title is-size-5">Customer: Aymeric Quesnes</p>
+      <section class="modal-card-body">
+        <div class="columns is-gapless">
+          <div class="column"></div>
+          <div class="column">
+            <img src="../../../assets/boss.png" style="max-width: 250px" *ngIf="sex < 2">
+            <img src="../../../assets/woman.png" style="max-width: 250px" *ngIf="sex == 2">
           </div>
-          <div class="column is-2" style="display: flex; align-items: center;"> 
-            <p class="title is-size-5">routed to</p>
+          <div class="column">
+            <div class="card">
+              <header class="card-header">
+                <p class="title is-5" style="padding: 5px; margin: auto">Customer calling:</p>
+              </header>
+              <div class="card-content" style="text-align:left">
+                <p class="title is-6">Skill: {{skill_options[skill].text}}</p>
+                <p class="title is-6">Sex: {{sex_options[sex].text}}</p>
+                <p class="title is-6">Age: {{age}} years old</p>
+                <p class="title is-6">Salary: {{salary_options[salary].text}}</p>
+                <p class="title is-6">Year of arrival: {{year_of_arrival}}</p>
+              </div>
+            </div>
           </div>
-          <div class="column is-5" style="display: flex; align-items: center;"  >
-            <p class="image"><img src="../../../assets/agent.gif" style="height:100%; width:100%"><p class="title is-size-5">Agent 1</p></p>
-            
+          <div class="column is-1"></div>
+          <div class="column">
+            <div class="card" style="margin-top: 25%;">
+              <header class="card-header">
+                <p class="title is-5" style="padding: 5px; margin: auto">Routed agent:</p>
+              </header>
+              <div class="card-content" style="text-align:left">
+                <p class="title is-6">Agent number: {{prediction}}</p>
+                <p class="title is-6">Name: Murielle</p>
+              </div>
+            </div>
           </div>
+          <div class="column">
+            <img src="../../../assets/telemarketer.png" style="max-width: 250px">
+          </div>
+          <div class="column"></div>
+        </div>
+        <div id="graphDiv2" *ngIf="!displaySatisfaction"></div><br>
+        <div *ngIf="displaySatisfaction">
+          <p class="title is-4">End of call<br>Customer's satisfaction:</p>
+          <img src="../../../assets/favorite.png" style="max-width:150px" *ngFor="let star of stars">
         </div>
       </section>
     </div>

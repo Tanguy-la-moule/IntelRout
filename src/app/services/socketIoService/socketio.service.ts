@@ -36,7 +36,6 @@ export class SocketIoService {
   }
 
   addInteractions(id: string, interactions: Array<Interaction>){
-    console.log(interactions[0]);
     var json = {"interactions_list_title": id, "interactions": interactions};
     this.socket.emit('add_interactions', json);
   }
@@ -75,6 +74,23 @@ export class SocketIoService {
       this.socket.on('predict_best_agent_result', (result) => {
         console.log(result)
         observer.next(result.best_agent);
+      });
+    });
+  }
+
+  callArriving(): Observable<Object> {
+    return new Observable<Object>((observer) => {
+      this.socket.on('new_call', (result) => {
+        console.log(result)
+        observer.next(result);
+      });
+    });
+  }
+
+  satisfactionArriving(): Observable<Object> {
+    return new Observable<Object>((observer) => {
+      this.socket.on('rating_added', (result) => {
+        observer.next(result);
       });
     });
   }
