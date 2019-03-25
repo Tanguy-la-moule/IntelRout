@@ -90,6 +90,7 @@ export class PredictorComponent implements OnInit {
   }
 
   public chargeSatisfaction(i: number): void{
+    this.stars = [];
     for(let a = 0; a < i; a++){
       setTimeout(() => {
         this.stars.push(true);
@@ -138,7 +139,6 @@ export class PredictorComponent implements OnInit {
     this.displayPredictionModal = false;
     if(this.satisfactionObservable){this.satisfactionObservable.unsubscribe();}
     this.displaySatisfaction = false;
-    this.stars = [];
   }
 
   generateGraph(){
