@@ -11,16 +11,12 @@ export class ChartComponent implements OnInit {
   @Input() simulation: Simulation;
   @Input() refresher: Number;
 
-  layout: Object = {}
-
   constructor() { }
 
-  ngOnInit() {
-    this.generateGraph();
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChange) {
-    this.generateGraph()
+    this.generateGraph();
   }
 
   generateGraph(){
@@ -30,7 +26,6 @@ export class ChartComponent implements OnInit {
         showscale: true,
         color: this.unpack(this.simulation.interactions, 'satisfaction'),
         colorscale: [[0, '#FF0000'], [0.6, '#FFFF00'], [0.66, '#FFFF00'], [1, '#00FF00']]
-  //      color: 'hsl(345.5, 97.1%, 59.8%)'
       },
 
       dimensions: [{
@@ -42,24 +37,28 @@ export class ChartComponent implements OnInit {
       }, {
         tickvals: [0, 1, 2],
         ticktext: ['Male', 'Non Binary', 'Female'],
+        constraintrange: [],
         range: [0,2],
         label: 'Sex',
         values: this.unpack(this.simulation.interactions, 'sex')
       }, {
         tickvals: [18, 20, 40, 60, 80, 100],
         ticktext: ['18', '20', '40', '60', '80', '100'],
+        constraintrange: [],
         range: [18,100],
         label: 'Age',
         values: this.unpack(this.simulation.interactions, 'age')
       }, {
         tickvals: [1970, 1980, 1990, 2000, 2010, 2020],
         ticktext: ['1970', '1980', '1990', '2000', '2010', '2020'],
+        constraintrange: [],
         range: [1970,2019],
         label: 'Arrival',
         values: this.unpack(this.simulation.interactions, 'year_of_arrival')
       }, {
         tickvals: [0, 1, 2, 3, 4, 5],
         ticktext: ['< $10k', '$10k - $30k', '$30k - $50k', '$50k - $100k', '$100k - $200k', '> $200k'],
+        constraintrange: [],
         range: [0,5],
         label: 'Salary',
         values: this.unpack(this.simulation.interactions, 'salary')
@@ -74,9 +73,9 @@ export class ChartComponent implements OnInit {
         label: 'Satisfaction',
         values: this.unpack(this.simulation.interactions, 'satisfaction')
       }]
-    }]; 
+    }];
 
-  Plotly.newPlot('graphDiv', data, this.layout);
+  Plotly.newPlot('graphDiv', data, {}, {responsive: true});
   }
 
   unpack(rows, key) {
