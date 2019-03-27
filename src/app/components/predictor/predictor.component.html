@@ -111,7 +111,11 @@
         <div id="graphDiv2" *ngIf="!displaySatisfaction"></div><br>
         <div *ngIf="displaySatisfaction">
           <p class="title is-4">End of call<br>Customer's satisfaction:</p>
-          <img src="../../../assets/favorite.png" style="max-width:150px" *ngFor="let star of stars">
+          <img src="../../../assets/favorite.png" style="max-width:150px" *ngIf="stars[0]">
+          <img src="../../../assets/favorite.png" style="max-width:150px" *ngIf="stars[1]">
+          <img src="../../../assets/favorite.png" style="max-width:150px" *ngIf="stars[2]">
+          <img src="../../../assets/favorite.png" style="max-width:150px" *ngIf="stars[3]">
+          <img src="../../../assets/favorite.png" style="max-width:150px" *ngIf="stars[4]">
         </div>
       </section>
     </div>

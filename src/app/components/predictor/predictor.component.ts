@@ -22,7 +22,7 @@ export class PredictorComponent implements OnInit {
   displayPredictionModal: boolean = false;
   prediction: number;
   loading: boolean = false;
-  stars: Array<boolean> = [];
+  stars: Array<boolean> = [false, false, false, false, false];
   displaySatisfaction: boolean = false;
   satisfactionObservable: any;
   
@@ -90,12 +90,16 @@ export class PredictorComponent implements OnInit {
   }
 
   public chargeSatisfaction(i: number): void{
-    this.stars = [];
-    for(let a = 0; a < i; a++){
-      setTimeout(() => {
-        this.stars.push(true);
-      }, a*200 + 600);
+    this.stars = [false, false,false, false, false];
+    for(let a = 1; a < i+1  ; a++){
+      this.modifyStars(a)
     }
+  }
+
+  public modifyStars(i: number){
+    setTimeout(() => {
+      this.stars = [i>0, i>1, i>2, i>3, i>4];
+    }, i*200 + 600);
   }
 
   public getCall(): void {
