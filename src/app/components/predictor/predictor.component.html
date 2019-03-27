@@ -72,7 +72,7 @@
       </header>
       <section class="modal-card-body">
         <div class="columns is-gapless">
-          <div class="column"></div>
+          <div class="column is-1"></div>
           <div class="column">
             <img src="../../../assets/boss.png" style="max-width: 250px" *ngIf="sex < 2">
             <img src="../../../assets/woman.png" style="max-width: 250px" *ngIf="sex == 2">
@@ -99,14 +99,14 @@
               </header>
               <div class="card-content" style="text-align:left">
                 <p class="title is-6">Agent number: {{prediction}}</p>
-                <p class="title is-6">Name: Murielle</p>
+                <p class="title is-6">Name: Amber</p>
               </div>
             </div>
           </div>
           <div class="column">
             <img src="../../../assets/telemarketer.png" style="max-width: 250px">
           </div>
-          <div class="column"></div>
+          <div class="column is-1"></div>
         </div>
         <div id="graphDiv2" *ngIf="!displaySatisfaction"></div><br>
         <div *ngIf="displaySatisfaction">

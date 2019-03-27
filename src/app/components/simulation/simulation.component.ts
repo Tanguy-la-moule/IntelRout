@@ -73,7 +73,7 @@ export class SimulationComponent implements OnInit {
         var shuffledData = this.shuffleArray(data)
         var pokemonTypes: Array<string> = new Array<string>();
         var pokemonInteractions = new Array<Interaction>();
-        while(i<50){
+        while(i<800){
           var pokemon = shuffledData[i];
           if(pokemonTypes.indexOf(pokemon['Type 1']) == -1){
             pokemonTypes.push(pokemon['Type 1'])
