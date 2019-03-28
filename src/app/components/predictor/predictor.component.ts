@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Simulation } from 'src/app/models/Simulation';
 import { SocketIoService } from 'src/app/services/socketIoService/socketio.service';
 import Plotly from 'plotly.js-dist';
-import { observable } from 'rxjs';
+import { LocalStorageService } from 'src/app/services/localStorageService/local-storage.service';
 
 @Component({
   selector: 'predictor',
@@ -11,8 +11,6 @@ import { observable } from 'rxjs';
 })
 export class PredictorComponent implements OnInit {
   @Input() simulation: Simulation;
-  @Input() isModelTrained: number;
-  @Output() train = new EventEmitter();
 
   sex: number = 0;
   age: number = 18;
@@ -25,6 +23,7 @@ export class PredictorComponent implements OnInit {
   stars: Array<boolean> = [false, false, false, false, false];
   displaySatisfaction: boolean = false;
   satisfactionObservable: any;
+  isModalGeneratedByCall: boolean = false;
   
 
   public salary_options: Array<Object> = [
@@ -57,7 +56,7 @@ export class PredictorComponent implements OnInit {
     },
   };
 
-  constructor(private socketIoService: SocketIoService) {
+  constructor(private localStorageService: LocalStorageService, private socketIoService: SocketIoService) {
     
   }
 
@@ -75,6 +74,8 @@ export class PredictorComponent implements OnInit {
     this.socketIoService.modelTrained().subscribe(result => {
       console.log("agent predicted: "+ result);
       this.loading = false;
+      this.simulation.isTrained = true;
+      this.localStorageService.saveActiveSimulation(this.simulation);
     })
   }
 
@@ -82,6 +83,7 @@ export class PredictorComponent implements OnInit {
     this.socketIoService.agentPredicted().subscribe(result => {
       console.log("agent predicted: "+ result);
       this.prediction = result;
+      this.isModalGeneratedByCall = false;
       this.displayPredictionModal = true;
       setTimeout(() => {
         this.generateGraph();
@@ -111,6 +113,7 @@ export class PredictorComponent implements OnInit {
       this.year_of_arrival = result['customer']['user_fields']['client_since'];
       this.salary = this.getSalaryFromZendeskSalary(result['customer']['user_fields']['salary']);
       this.satisfactionObservable = this.getSatisfaction();
+      this.isModalGeneratedByCall = true;
       this.displayPredictionModal = true;
       setTimeout(() => {
         this.generateGraph();
@@ -135,7 +138,7 @@ export class PredictorComponent implements OnInit {
   }
 
   public trainModel(){
-    this.train.emit();
+    this.socketIoService.trainModel(this.simulation.id.toString());
     this.loading = true;
   }
 
@@ -163,7 +166,6 @@ export class PredictorComponent implements OnInit {
       }, {
         tickvals: [0, 1, 2],
         ticktext: ['Male', 'Non Binary', 'Female'],
-        //constraintrange: [this.sex - 0.5, this.sex + 0.5],
         constraintrange: this.getSexConstraint(this.sex),
         range: [0,2],
         label: 'Sex',

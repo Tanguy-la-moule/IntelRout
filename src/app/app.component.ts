@@ -17,8 +17,6 @@ export class AppComponent {
   simulations: Array<Simulation>;
   displayModal: boolean = false;
 
-  isModelTrained: boolean = false;
-
   constructor(private localStorageService: LocalStorageService, private socketIoService: SocketIoService){
     if(localStorage.getItem('id') == undefined){
       localStorage.clear();
@@ -27,10 +25,9 @@ export class AppComponent {
       console.log('localStorage cleared');
     }
     if (localStorage.getItem('CurrentSimulation') == undefined){
-      this.simulation = new Simulation(0, '' ,'', new Array<Interaction>());
+      this.simulation = new Simulation(0, '' ,'', false, new Array<Interaction>());
       this.localStorageService.saveActiveSimulation(this.simulation);
       this.socketIoService.initiateModel(this.simulation.id.toString());
-//      this.socketIoService.addInteractions(this.simulation.id.toString(), this.simulation.interactions);
     } else {
       this.simulation = localStorageService.getCurrentSimulation();
       this.socketIoService.initiateModel(this.simulation.id.toString())
@@ -43,7 +40,6 @@ export class AppComponent {
 
     this.getInitiated();
     this.interactionAdded();
-    this.modelTrained();
   }
 
   onDiscard(save: boolean) {
@@ -51,7 +47,7 @@ export class AppComponent {
     if(save){
       this.localStorageService.saveSimulation(this.simulation);
     }
-    this.simulation = new Simulation(0, '' ,'', new Array<Interaction>());
+    this.simulation = new Simulation(0, '' ,'', false, new Array<Interaction>());
     this.localStorageService.saveActiveSimulation(this.simulation);
     this.socketIoService.initiateModel(this.simulation.id.toString());
   }
@@ -127,25 +123,7 @@ export class AppComponent {
     this.socketIoService.interactionAdded().subscribe(bool => {
       if(bool){
         console.log("interactions added");
-        this.isModelTrained = false;
       }
     })
-  }
-
-  interactionAddedToSimulation(){
-    this.isModelTrained = false;
-  }
-
-  modelTrained(): void {
-    this.socketIoService.modelTrained().subscribe(bool => {
-      if(bool){
-        this.isModelTrained = true;
-        console.log("model trained");
-      }
-    })
-  }
-
-  trainModel(){
-    this.socketIoService.trainModel(this.simulation.id.toString());
   }
 }

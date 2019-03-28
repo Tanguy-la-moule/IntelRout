@@ -12,7 +12,7 @@ export class LocalStorageService {
 
   getCurrentSimulation(): Simulation{
     var parsedSimulation = JSON.parse(localStorage.getItem('CurrentSimulation'));
-    var currentSimulation: Simulation = new Simulation(parseInt(parsedSimulation.id), parsedSimulation.date, parsedSimulation.name, parsedSimulation.interactions)
+    var currentSimulation: Simulation = new Simulation(parseInt(parsedSimulation.id), parsedSimulation.date, parsedSimulation.name, parsedSimulation.isTrained, parsedSimulation.interactions)
     
     console.log('Getting current simulation :')
     console.log(currentSimulation)
@@ -25,7 +25,7 @@ export class LocalStorageService {
     console.log(parsedSimulations);
     var simulations: Array<Simulation> = new Array<Simulation>();
     for (let simulation of parsedSimulations){
-      simulations.push(new Simulation(simulation.id, simulation.date, simulation.name, simulation.interactions))
+      simulations.push(new Simulation(simulation.id, simulation.date, simulation.name, simulation.isTrained, simulation.interactions))
     }    
     return simulations
   }
@@ -83,6 +83,6 @@ export class LocalStorageService {
     }
     localStorage.setItem('simulations', JSON.stringify(jsonSimulations));
     console.log('Opening the simulation:')
-    return new Simulation((jsonSimulations[0].id), jsonSimulations[0].date, jsonSimulations[0].name, jsonSimulations[0].interactions)
+    return new Simulation((jsonSimulations[0].id), jsonSimulations[0].date, jsonSimulations[0].name, jsonSimulations[0].isTrained, jsonSimulations[0].interactions)
   }
 }

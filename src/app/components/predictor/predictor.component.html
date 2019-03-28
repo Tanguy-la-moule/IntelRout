@@ -1,16 +1,16 @@
 <div class="card">
   <header class="card-header">
-      <p class="title is-size-5" style="padding: 1%; width: 100%; text-align: left" *ngIf="isModelTrained && !loading">
+      <p class="title is-size-5" style="padding: 1%; width: 100%; text-align: left" *ngIf="simulation.isTrained && !loading">
         Get routing prediction: fill manually caller's information
       </p>
-      <div class="title is-size-5" style="padding: 1%; width: 100%; text-align: left" *ngIf="!isModelTrained">
+      <div class="title is-size-5" style="padding: 1%; width: 100%; text-align: left" *ngIf="!simulation.isTrained">
         Train model
       </div>
     </header>
   <div class="card-content" style="text-align: left">
-    <a class="button is-fullwidth is-primary" *ngIf="!isModelTrained && !loading" (click)="trainModel()">Train model</a>
+    <a class="button is-fullwidth is-primary" *ngIf="!simulation.isTrained && !loading" (click)="trainModel()">Train model</a>
     <div class="lds-ring" *ngIf="loading"><div></div><div></div><div></div><div></div></div>
-    <div *ngIf="isModelTrained && !loading">
+    <div *ngIf="simulation.isTrained && !loading">
       <div class="columns is-gapless">
         <div class="column">
           <div class="field">
@@ -47,7 +47,7 @@
           <div class="column">
             <div class="field">
               <div class="control">
-                  <label class="label">Arrival year:</label>
+                  <label class="label">Client since:</label>
                 <input class="input is-primary" style="width: 80%" type="number" step="1" min="1967" max="2019" [(ngModel)]="year_of_arrival">
               </div>
             </div>
@@ -83,11 +83,11 @@
                 <p class="title is-5" style="padding: 5px; margin: auto">Customer calling:</p>
               </header>
               <div class="card-content" style="text-align:left">
-                <p class="title is-6">Skill: {{skill_options[skill].text}}</p>
+                <p class="title is-6">Intent: {{skill_options[skill].text}}</p>
                 <p class="title is-6">Sex: {{sex_options[sex].text}}</p>
                 <p class="title is-6">Age: {{age}} years old</p>
                 <p class="title is-6">Salary: {{salary_options[salary].text}}</p>
-                <p class="title is-6">Year of arrival: {{year_of_arrival}}</p>
+                <p class="title is-6">Client since: {{year_of_arrival}}</p>
               </div>
             </div>
           </div>
@@ -108,7 +108,7 @@
           </div>
           <div class="column is-1"></div>
         </div>
-        <div id="graphDiv2" *ngIf="!displaySatisfaction"></div><br>
+        <div id="graphDiv2" *ngIf="!displaySatisfaction && !isModalGeneratedByCall"></div><br>
         <div *ngIf="displaySatisfaction">
           <p class="title is-4">End of call<br>Customer's satisfaction:</p>
           <img src="../../../assets/favorite.png" style="max-width:150px" *ngIf="stars[0]">
