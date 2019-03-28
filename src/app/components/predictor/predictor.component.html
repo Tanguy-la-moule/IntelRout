@@ -11,6 +11,7 @@
     <a class="button is-fullwidth is-primary" *ngIf="!simulation.isTrained && !loading" (click)="trainModel()">Train model</a>
     <div class="lds-ring" *ngIf="loading"><div></div><div></div><div></div><div></div></div>
     <div *ngIf="simulation.isTrained && !loading">
+      <a class="button is-fullwidth is-primary" (click)="trainModel()">Retrain model</a><br>
       <div class="columns is-gapless">
         <div class="column">
           <div class="field">
