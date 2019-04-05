@@ -18,7 +18,7 @@ export class PredictorComponent implements OnInit {
   skill: number = 0;
   year_of_arrival: number = 2019;
   displayPredictionModal: boolean = false;
-  prediction: number;
+  prediction: number = 1;
   loading: boolean = false;
   stars: Array<boolean> = [false, false, false, false, false];
   displaySatisfaction: boolean = false;
@@ -26,14 +26,22 @@ export class PredictorComponent implements OnInit {
   isModalGeneratedByCall: boolean = false;
   
 
-  public salary_options: Array<Object> = [
-      {id: 0, text: 'Lower than $10.000'},
-      {id: 1, text: '$10.000 to $30.000'},
-      {id: 2, text: '$30.000 to $50.000'},
-      {id: 3, text: '$50.000 to $100.000'},
-      {id: 4, text: '$100.000 to $200.000'},
-      {id: 5, text: 'More than $200.000'},
+  public agent_info: Array<Object> = [
+      {id: 1, name: 'Sally Ride', photo: 'female_agent.png'},
+      {id: 2, name: 'Pierre Bézier', photo: 'male_agent.png'},
+      {id: 3, name: 'Rosa Parks', photo: 'female_agent.png'},
+      {id: 4, name: 'Ada Lovelace', photo: 'female_agent.png'},
+      {id: 5, name: 'Richard Feynman', photo: 'male_agent.png'},
   ];
+
+  public salary_options: Array<Object> = [
+    {id: 0, text: 'Lower than $10.000'},
+    {id: 1, text: '$10.000 to $30.000'},
+    {id: 2, text: '$30.000 to $50.000'},
+    {id: 3, text: '$50.000 to $100.000'},
+    {id: 4, text: '$100.000 to $200.000'},
+    {id: 5, text: 'More than $200.000'},
+];
 
   public sex_options: Array<Object> = [
     {id: 0, text: 'Male'},
@@ -72,7 +80,6 @@ export class PredictorComponent implements OnInit {
 
   public trained(): void {
     this.socketIoService.modelTrained().subscribe(result => {
-      console.log("agent predicted: "+ result);
       this.loading = false;
       this.simulation.isTrained = true;
       this.localStorageService.saveActiveSimulation(this.simulation);
@@ -81,7 +88,6 @@ export class PredictorComponent implements OnInit {
 
   public agentPredicted(): void {
     this.socketIoService.agentPredicted().subscribe(result => {
-      console.log("agent predicted: "+ result);
       this.prediction = result;
       this.isModalGeneratedByCall = false;
       this.displayPredictionModal = true;
@@ -106,7 +112,9 @@ export class PredictorComponent implements OnInit {
 
   public getCall(): void {
     this.socketIoService.callArriving().subscribe(result => {
-      this.prediction = result['agent_ID'];
+      console.log('Call arriving')
+      console.log(result);
+      this.prediction = result['agent']['locale_id'];
       this.skill = parseInt(result['intent']) - 1;
       this.age = result['customer']['user_fields']['age'];
       this.sex = result['customer']['user_fields']['gender'];
@@ -149,62 +157,64 @@ export class PredictorComponent implements OnInit {
   }
 
   generateGraph(){
-    var data = [{
-      type: 'parcoords',
-      line  : {
-        showscale: true,
-        color: this.unpack(this.simulation.interactions, 'satisfaction'),
-        colorscale: [[0, '#FF0000'], [0.6, '#FFFF00'], [0.66, '#FFFF00'], [1, '#00FF00']]
-      },
+    if(!this.isModalGeneratedByCall){
+      var data = [{
+        type: 'parcoords',
+        line  : {
+          showscale: true,
+          color: this.unpack(this.simulation.interactions, 'satisfaction'),
+          colorscale: [[0, '#FF0000'], [0.6, '#FFFF00'], [0.66, '#FFFF00'], [1, '#00FF00']]
+        },
 
-      dimensions: [{
-        tickvals: [5,4,3,2,1,0],
-        ticktext: ['Other', 'Appointment', 'Checks', 'New card', 'Loan', 'Card loss'],
-        range: [0,5],
-        label: 'Skill',
-        values: this.unpack(this.simulation.interactions, 'skill')
-      }, {
-        tickvals: [0, 1, 2],
-        ticktext: ['Male', 'Non Binary', 'Female'],
-        constraintrange: this.getSexConstraint(this.sex),
-        range: [0,2],
-        label: 'Sex',
-        values: this.unpack(this.simulation.interactions, 'sex')
-      }, {
-        tickvals: [18, 20, 40, 60, 80, 100],
-        ticktext: ['18', '20', '40', '60', '80', '100'],
-        constraintrange: [this.age - 10, this.age + 10],
-        range: [18,100],
-        label: 'Age',
-        values: this.unpack(this.simulation.interactions, 'age')
-      }, {
-        tickvals: [1970, 1980, 1990, 2000, 2010, 2020],
-        ticktext: ['1970', '1980', '1990', '2000', '2010', '2020'],
-        constraintrange: [this.year_of_arrival - 10, this.year_of_arrival + 10],
-        range: [1970,2019],
-        label: 'Arrival',
-        values: this.unpack(this.simulation.interactions, 'year_of_arrival')
-      }, {
-        tickvals: [0, 1, 2, 3, 4, 5],
-        ticktext: ['< $10k', '$10k - $30k', '$30k - $50k', '$50k - $100k', '$100k - $200k', '> $200k'],
-        constraintrange: [this.salary - 0.5, this.salary + 0.5],
-        range: [0,5],
-        label: 'Salary',
-        values: this.unpack(this.simulation.interactions, 'salary')
-      }, {
-        tickvals: [1, 2, 3, 4, 5],
-        ticktext: ['Agent 1', 'Agent 2', 'Agent 3', 'Agent 4', 'Agent 5'],
-        range: [1,5],
-        label: 'Agent',
-        values: this.unpack(this.simulation.interactions, 'agent_ID')
-      }, {
-        range: [1,5],
-        label: 'Satisfaction',
-        values: this.unpack(this.simulation.interactions, 'satisfaction')
-      }]
-    }];
+        dimensions: [{
+          tickvals: [5,4,3,2,1,0],
+          ticktext: ['Other', 'Appointment', 'Checks', 'New card', 'Loan', 'Card loss'],
+          range: [0,5],
+          label: 'Skill',
+          values: this.unpack(this.simulation.interactions, 'skill')
+        }, {
+          tickvals: [0, 1, 2],
+          ticktext: ['Male', 'Non Binary', 'Female'],
+          constraintrange: this.getSexConstraint(this.sex),
+          range: [0,2],
+          label: 'Sex',
+          values: this.unpack(this.simulation.interactions, 'sex')
+        }, {
+          tickvals: [18, 20, 40, 60, 80, 100],
+          ticktext: ['18', '20', '40', '60', '80', '100'],
+          constraintrange: [this.age - 10, this.age + 10],
+          range: [18,100],
+          label: 'Age',
+          values: this.unpack(this.simulation.interactions, 'age')
+        }, {
+          tickvals: [1970, 1980, 1990, 2000, 2010, 2020],
+          ticktext: ['1970', '1980', '1990', '2000', '2010', '2020'],
+          constraintrange: [this.year_of_arrival - 10, this.year_of_arrival + 10],
+          range: [1970,2019],
+          label: 'Arrival',
+          values: this.unpack(this.simulation.interactions, 'year_of_arrival')
+        }, {
+          tickvals: [0, 1, 2, 3, 4, 5],
+          ticktext: ['< $10k', '$10k - $30k', '$30k - $50k', '$50k - $100k', '$100k - $200k', '> $200k'],
+          constraintrange: [this.salary - 0.5, this.salary + 0.5],
+          range: [0,5],
+          label: 'Salary',
+          values: this.unpack(this.simulation.interactions, 'salary')
+        }, {
+          tickvals: [1, 2, 3, 4, 5],
+          ticktext: ['Agent 1', 'Agent 2', 'Agent 3', 'Agent 4', 'Agent 5'],
+          range: [1,5],
+          label: 'Agent',
+          values: this.unpack(this.simulation.interactions, 'agent_ID')
+        }, {
+          range: [1,5],
+          label: 'Satisfaction',
+          values: this.unpack(this.simulation.interactions, 'satisfaction')
+        }]
+      }];
 
-    Plotly.newPlot('graphDiv2', data, this.layout, {responsive: true});
+      Plotly.newPlot('graphDiv2', data, this.layout, {responsive: true});
+    }
   }
 
   getSexConstraint(sex: number){

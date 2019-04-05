@@ -43,7 +43,7 @@ export class SocketIoService {
   interactionAdded(): Observable<boolean> {
     return new Observable<boolean>((observer) => {
       this.socket.on('add_interactions_result', (interactions) => {
-        console.log(interactions)
+        console.log('interactions added');
         observer.next(true);
       });
     });
@@ -72,7 +72,8 @@ export class SocketIoService {
   agentPredicted(): Observable<number> {
     return new Observable<number>((observer) => {
       this.socket.on('predict_best_agent_result', (result) => {
-        console.log(result)
+        console.log('Agent predicted');
+        console.log(result);
         observer.next(result.best_agent);
       });
     });
@@ -81,7 +82,8 @@ export class SocketIoService {
   callArriving(): Observable<Object> {
     return new Observable<Object>((observer) => {
       this.socket.on('new_call', (result) => {
-        console.log(result)
+        console.log('Call arriving');
+        console.log(result);
         observer.next(result);
       });
     });

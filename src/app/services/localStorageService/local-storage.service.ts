@@ -32,7 +32,6 @@ export class LocalStorageService {
   saveActiveSimulation(simulation: Simulation): void{
     localStorage.setItem('CurrentSimulation', JSON.stringify(simulation));
     console.log('Saving simulation to current:')
-    console.log(localStorage.getItem('CurrentSimulation'))
   }
 
   saveSimulation(simulation: Simulation): void {

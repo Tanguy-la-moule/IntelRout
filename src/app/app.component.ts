@@ -30,16 +30,16 @@ export class AppComponent {
       this.socketIoService.initiateModel(this.simulation.id.toString());
     } else {
       this.simulation = localStorageService.getCurrentSimulation();
-      this.socketIoService.initiateModel(this.simulation.id.toString())
+      if(!this.simulation.isTrained){
+        this.socketIoService.initiateModel(this.simulation.id.toString())
+      }
     }
     if(localStorage.getItem('simulations') == undefined){
       localStorage.setItem('simulations', '[]');
     } else {
       this.simulations = this.localStorageService.getSimulations();
     }
-
     this.getInitiated();
-    this.interactionAdded();
   }
 
   onDiscard(save: boolean) {
@@ -115,14 +115,6 @@ export class AppComponent {
       if(bool){
         console.log("model initiated, trying to add interactions");
         this.socketIoService.addInteractions(this.simulation.id.toString(), this.simulation.interactions);
-      }
-    })
-  }
-
-  interactionAdded(): void {
-    this.socketIoService.interactionAdded().subscribe(bool => {
-      if(bool){
-        console.log("interactions added");
       }
     })
   }

@@ -99,13 +99,13 @@
                 <p class="title is-5" style="padding: 5px; margin: auto">Routed agent:</p>
               </header>
               <div class="card-content" style="text-align:left">
+                <p class="title is-6">Name: {{agent_info[prediction - 1].name}}</p>
                 <p class="title is-6">Agent number: {{prediction}}</p>
-                <p class="title is-6">Name: Amber</p>
               </div>
             </div>
           </div>
           <div class="column">
-            <img src="../../../assets/telemarketer.png" style="max-width: 250px">
+            <img src="../../../assets/{{agent_info[prediction - 1].photo}}" style="max-width: 250px">
           </div>
           <div class="column is-1"></div>
         </div>
